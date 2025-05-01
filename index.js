@@ -33,7 +33,7 @@ app.post('/ask', async (req, res) => {
       body: JSON.stringify({
         model: 'claude-3-haiku-20240307',
         messages: [{ role: 'user', content: question }],
-        max_tokens: 300
+        max_tokens: 1000
       })
     });
 
