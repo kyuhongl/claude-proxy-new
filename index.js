@@ -4,7 +4,11 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*', // or replace with your extension ID if you want to restrict
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
 const CLAUDE_API_KEY = process.env.ANTHROPIC_API_KEY;
