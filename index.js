@@ -4,9 +4,9 @@ const cors = require('cors');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const app = express();
 app.use(cors({
-  origin: '*', // or replace with your extension ID if you want to restrict
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
 }));
 app.use(express.json());
 
