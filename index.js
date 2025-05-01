@@ -14,8 +14,10 @@ app.post('/ask', async (req, res) => {
 
   if (!question) return res.status(400).json({ error: 'Missing question' });
 
+  console.log("📥 Sending to Claude:", question.slice(0, 100));
+
   try {
-    const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'x-api-key': CLAUDE_API_KEY,
@@ -29,14 +31,20 @@ app.post('/ask', async (req, res) => {
       })
     });
 
-    const data = await claudeRes.json();
-    res.json({ answer: data?.content?.[0]?.text || 'No response' });
+    const data = await response.json();
+    console.log("📤 Claude raw response:", JSON.stringify(data, null, 2));
+
+    const answer = data?.content?.[0]?.text?.trim();
+    res.json({ answer: answer || "⚠️ Claude returned no answer." });
   } catch (e) {
+    console.error("❌ Claude API error:", e.message);
     res.status(500).json({ error: e.message });
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.get("/", (req, res) => {
+  res.send("Claude proxy is running");
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
